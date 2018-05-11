@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>HR Empeek test</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="controllers/app.js"></script>
+	<script src="models/itemsModel.js" type="text/javascript"></script>
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+</header>
+<body ng-app="application" ng-controller="mainController">
+
+	<div class="wrapper">
+	
+		<!-- Items part -->
+		<section class="items">
+			<h2 class="title">Items</h2>
+			<!-- Form -->
+			<form class="items-form" ng-submit="itemsNew()">
+				<input type="text" placeholder="Type name here..." ng-model="itemTitle" required>
+				<button type="submit">Add new</button>
+			</form>
+			<!-- List -->
+			<p class="hint" ng-show="model.items.length==0">No one items</p>
+			<ul class="items-list">
+				<li class="items-list-row ng-class:{'active': indexActive==$index};" title="Click to show comments" ng-repeat="item in model.items" ng-click="itemActivate($index)">
+					<p class="items-list-row-title">
+						{{item.itemTitle}}
+						<span class="items-list-row-count">{{item.comments.length}}</span>
+					</p>
+					<button type="button" ng-click="itemsDelete($index)">Delete</button>
+				</li>
+			</ul>			
+		</section>
+		
+		<!-- Comments part	 -->
+		<article class="comments">
+			<h2 class="title">Comments</h2>
+			<!-- List -->
+			<p class="hint" ng-show="indexActive==undefined">Select any item or insert comments</p>
+			<ul class="comments-list" ng-show="indexActive!=undefined">
+				<li class="comments-list-row" ng-repeat="comment in model.items[indexActive].comments">
+					<div class="comments-list-row-square"></div>
+					<p class="comments-list-row-caption">{{comment}}</p>
+				</li>
+				<!-- Insert new comment -->
+				<li class="comments-list-row">
+					<div class="comments-list-row-square"></div>
+					<textarea class="comments-list-row-caption" ng-model="itemComment"></textarea>
+					<button type="button" ng-show="itemComment.length>0" ng-click="commentNew()">Insert this comment or press Ctrl+Enter</button>
+				</li>
+			</ul>			
+		</article>
+	
+	</div>
+
+</body>
+</html>
