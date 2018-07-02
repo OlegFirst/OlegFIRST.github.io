@@ -252,6 +252,7 @@ a[href=""]:hover {
 }
 .nav-button {
 	position: absolute;
+	border: 1px solid #5fe25f !important;
 	height: inherit;
 	width: 150px;
 	right: 0px;
@@ -259,10 +260,12 @@ a[href=""]:hover {
 }
 
 footer {
-	background-color: #cccccc;
+	background-color: #f2f2f2;
 	clear: both;
 	margin-top: 50px;
-	padding: 20px;
+	padding: 20px;	
+}
+footer>h4 {
 	text-align: center;
 }
 footer li{

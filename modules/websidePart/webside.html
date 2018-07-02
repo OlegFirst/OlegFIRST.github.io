@@ -57,8 +57,10 @@
 			<input ng-if="isEditing" type="text" ng-model="formEditing.url" required>
 		</li>
 		<li class="edit-items-item edit-buttons row-one">
-			<button type="button" ng-click="isEditVisible = false;">CANCEL</button>
-			<button type="submit" ng-click="formSubmit(isEditing); isEditVisible = false;">SAVE</button>
+			<button type="button" ng-click="validationMessagesClear(); isEditVisible = false;">CANCEL</button>
+			<button type="submit" ng-click="formSubmit(isEditing)">SAVE</button>
 		</li>
 	</ul>
 </form>
+
+<div ng-include="'modules/validationPart/validation.html'"></div>
