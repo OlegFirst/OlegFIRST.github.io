@@ -1,0 +1,214 @@
+<div id="settingsWrap" ng-controller="settingsController">
+
+	<!-- Fog -->
+	<div class="fog" ng-show="isManageVisible || isPeopleEditVisible"></div>
+
+	<!-- Left section -->
+	<section class="settingsLeft">
+		<header class="settingsLeft-title row"><h3>Settings part</h3></header>
+		<nav class="settingsLeft-nav">
+			<ul class="settingsLeft-nav-items">
+				<li class="settingsLeft-nav-items-item row-one">
+					<i class="far fa-smile smile"></i>
+					<a href="" ng-click="scrollTo('people')">People</a>
+				</li>
+				<li class="settingsLeft-nav-items-item row-one">
+					<i class="far fa-smile smile"></i>
+					<a href="" ng-click="scrollTo('appearance')">Appearance</a>
+				</li>
+				<span class="settingsLeft-nav-items-span">Advanced</span>
+				<li class="settingsLeft-nav-items-item row-one">
+					<i class="far fa-smile smile"></i>
+					<a href="" ng-click="scrollTo('printing')">Printing</a>
+				</li>
+				<li class="settingsLeft-nav-items-item row-one">
+					<i class="far fa-smile smile"></i>
+					<a href="" ng-click="scrollTo('reset')">Reset</a>
+				</li>
+			</ul>
+		</nav>
+	</section>
+
+	<!-- Right section -->
+	<section class="settingsRight">
+		<header class="settingsRight-search row">
+			<input type="text" placeholder="Search (type user name)" ng-model="userSearch">
+		</header>		
+		<ul class="settingsRight-list">
+		
+			<!-- People -->
+			<li id="people" class="settingsRight-list-item">
+				<h4>People</h4>
+				<div class="settingsRight-list-item-row people-row1">
+					<div ng-show="people.isEmpty">List of people is empty</div>
+					<div ng-show="!people.isEmpty">
+						<ul class="people-row1-inner">						
+						<li class="people-row1-inner-item row-one" ng-repeat="item in people.items | myFilter: userSearch: 'caseInsensitive'">
+								<div class="user row" ng-show="item.file == null">
+									<i class="far fa-user"></i>									
+								</div>
+								<img class="people-row1-inner-item-image" data-ng-src="{{item.file}}" width="70" height="70" alt="User image" ng-hide="item.file == null">
+								<div class="people-row1-inner-item-message">
+									<p><b>
+										User name:
+										<span ng-if="item.userName != ''"> {{item.userName}}</span>
+										<span ng-if="item.userName == ''"><i> Empty</i></span>
+									</b></p>
+									e-mail:
+									<span ng-if="item.email != ''">{{item.email}}</span>
+									<span ng-if="item.email ==''"><i>Empty</i></span>
+								</div>
+								<div class="empty"></div>
+								<div class="people-row1-inner-item-button">
+									<button type="button" ng-click="peopleEditPreparation($index)">Edit</button>
+								</div>
+							</li>
+						</ul>
+					</div>					
+				</div>
+				<div class="settingsRight-list-item-row present people-row2">
+					<button type="button" ng-click="peopleInsert()">Manage other people</button>
+				</div>
+			</li>
+			
+			<!-- Appearance -->
+			<li id="appearance" class="settingsRight-list-item">
+				<h4>Appearance</h4>
+				<div class="settingsRight-list-item-row appearance-row1">
+					<span>Themes</span>
+					<div>
+						<label><input type="radio" ng-click="themesChecked()" name="themesColor" ng-model="appearance.themes" value="White">White</label>
+						<label><input type="radio" ng-click="themesChecked()" name="themesColor" ng-model="appearance.themes" value="Black">Black</label>
+					</div>
+				</div>
+				<div class="settingsRight-list-item-row appearance-row2">
+					<span>Add bookmark</span>
+					<ul class="bookmarks-list">
+						<li class="bookmarks-list-item" ng-repeat="item in bookmarks.items">
+							<span>{{item.title}}</span>							
+						</li>
+					</ul>
+					<div>
+						<input type="text" ng-model="appearanceBookmark.title" placeholder="New bookmark title">						
+						<span class="appearance-error" ng-show="error.title">Title error</span>					
+						<input type="text" ng-model="appearanceBookmark.url" placeholder="New bookmark URL">						
+						<span class="appearance-error" ng-show="error.url">URL error. Example: https://tenantcloud.com</span>						
+						<button id="appearanceBookmarkButton" type="button" ng-click="appearanceInsert()">Add</button>
+					</div>
+				</div>
+				<div class="settingsRight-list-item-row appearance-row3 row-one">
+					<span>Show bookmark</span>
+					<div class="radioButton" ng-click="showBookmarkChecked()">
+						<i class="fas fa-check"></i>
+						<div class="radioButton-circle ng-class:{'radioButton-circle-left': !appearance.isShowBookmark}"></div>
+					</div>
+				</div>
+				
+				<div class="settingsRight-list-item-row appearance-row4 row-one">
+					<span>Font size</span>
+					<div class="dropdown">
+						<div class="dropdown-list" ng-init="isFontSizeShowing = false">
+							<div class="dropdown-list-selected" ng-click="isFontSizeShowing = (isFontSizeShowing==true) ? false : true;">{{fontSize.getFontSize()}}</div>
+							<ul class="dropdown-list-items ng-class:{'fontSize-show': isFontSizeShowing}">
+								<li ng-repeat="item in fontSize.list" class="dropdown-list-items-item" ng-click="fontSizeSelected($index); $parent.isFontSizeShowing = false;">{{item}}</li>								
+							</ul>
+						</div>
+						<button type="button" class="dropdown-button" ng-click="isFontSizeShowing = (isFontSizeShowing==true) ? false : true;">
+							<i class="fas fa-caret-down"></i>
+						</button>
+					</div>
+				</div>
+				<div class="settingsRight-list-item-row present appearance-row5 row-one">
+					<span>Page zoom</span>
+					<div class="dropdown">
+						<div class="dropdown-list" ng-init="isPageZoomShowing = false">
+							<div class="dropdown-list-selected" ng-click="isPageZoomShowing = (isPageZoomShowing==true) ? false : true;">{{pageZoom.getPageZoom()}}</div>
+							<ul class="dropdown-list-items ng-class:{'pageZoom-show': isPageZoomShowing}">
+								<li ng-repeat="item in pageZoom.list" class="dropdown-list-items-item" ng-click="pageZoomSelected($index); $parent.isPageZoomShowing = false;">{{item}}</li>								
+							</ul>
+						</div>
+						<button type="button" class="dropdown-button" ng-click="isPageZoomShowing = (isPageZoomShowing==true) ? false : true;">
+							<i class="fas fa-caret-down"></i>
+						</button>
+					</div>
+				</div>
+			</li>
+			
+			<span class="settingsRight-list-span">Advanced</span>			
+			
+			<!-- Printing -->
+			<li id="printing" class="settingsRight-list-item printing-row1">
+				<h4>Printing</h4>
+				<div class="settingsRight-list-item-row present">
+				<div id="printers" class="dropdown">
+					<div class="dropdown-list" ng-init="isPrintersShowing = false">
+						<div class="dropdown-list-selected" ng-click="isPrintersShowing = (isPrintersShowing==true) ? false : true;">{{printers.getPrinter()}}</div>
+						<ul class="dropdown-list-items ng-class:{'printers-show': isPrintersShowing}">
+							<li ng-repeat="item in printers.list" class="dropdown-list-items-item" ng-click="printersSelected($index); $parent.isPrintersShowing = false;">{{item}}</li>								
+						</ul>
+					</div>
+					<button type="button" class="dropdown-button" ng-click="isPrintersShowing = (isPrintersShowing==true) ? false : true;">Printers</button>
+				</div>
+			</li>
+			
+			<!-- Reset -->
+			<li id="reset" class="settingsRight-list-item reset-row1">
+				<h4>Reset</h4>				
+				<div id="reset" class="settingsRight-list-item-row present">
+					<button type="button" ng-click="reset()">Reset</button><br>
+					<span>Restore settings to their original defaults</span>
+				</div>
+			</li>
+			
+		</ul>
+	</section>
+	
+	<!-- Manage other people -->
+	<form class="manage edit" ng-show="isManageVisible">
+		<h4>Manage other people</h4>
+		<div class="people-row1">
+			<div class="row-one">
+				<div class="manage-photo user">
+					<i class="far fa-user" ng-show="manageForm.file == null"></i>
+					<img id="photoPreview" ng-hide="manageForm.file == null">
+					<input id="manageImage" accept="image/*" type="file" class="manage-photo-file" onchange="angular.element(this).scope().openFile(this, 'managing')">					
+				</div>				
+				<div>
+					<p><input type="text" placeholder="User name" ng-model="manageForm.userName"></input></p>
+					<input type="email" placeholder="E-mail" ng-model="manageForm.email"></input>
+				</div>				
+			</div>
+		</div>
+		<li class="manage-buttons row-one">
+			<button type="button" ng-click="validationMessagesClear(); isManageVisible = false;">CANCEL</button>
+			<button type="submit" ng-click="manageFormSubmit()">SAVE</button>
+		</li>
+	</form>
+	
+	<!-- Edit other people -->
+	<form class="manage edit" ng-show="isPeopleEditVisible">
+		<h4>Person information edits</h4>
+		<div class="people-row1">
+			<div class="row-one">
+				<div class="manage-photo user">
+					<i class="far fa-user" ng-show="peopleEditForm.file == null"></i>
+					<img id="photoPreviewEdit" data-ng-src="{{peopleEditForm.file}}" ng-hide="peopleEditForm.file == null">
+					<input id="manageImage" accept="image/*" type="file" class="manage-photo-file" onchange="angular.element(this).scope().openFile(this, 'editing')">					
+				</div>				
+				<div>
+					<p><input type="text" placeholder="User name" ng-model="peopleEditForm.userName"></input></p>
+					<input type="email" placeholder="E-mail" ng-model="peopleEditForm.email"></input>
+				</div>				
+			</div>
+		</div>
+		<li class="manage-buttons row-one">
+			<button type="button" ng-click="validationMessagesClear(); isPeopleEditVisible = false;">CANCEL</button>
+			<div class="empty"></div>
+			<button type="submit" class="remove" ng-click="peopleEditFormRemove(); validationMessagesClear(); isPeopleEditVisible = false;">Remove</button>
+			<button type="submit" ng-click="peopleEditFormSubmit()">SAVE</button>
+		</li>
+	</form>
+	
+	<div ng-include="'modules/validationPart/validation.html'"></div>
+	
+</div>
