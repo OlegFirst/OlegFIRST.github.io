@@ -1,60 +1,52 @@
 <!DOCTYPE html>
 <html>
-<header>
-	<title>HR Empeek test</title>
-	<meta charset="utf-8"></meta>
+<head>
+	<title>Bookmarks list</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-	<script src="controllers/app.js"></script>
-	<script src="models/itemsModel.js" type="text/javascript"></script>
+	<link rel="shortcut icon" type="image/x-icon" href="images/title.ico">
+	<meta charset="utf-8">
 	<link href="css/style.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-</header>
-<body ng-app="application" ng-controller="mainController">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>		
+	<script src="js/app.js" type="text/javascript"></script>
+	<script src="modules/websidePart/websideCtrl.js" type="text/javascript"></script>
+	<script src="modules/settingsPart/settingsCtrl.js" type="text/javascript"></script>
+	<script src="modules/ValidationPart/validationCtrl.js" type="text/javascript"></script>
+	<!-- Models -->
+	<script src="models/bookmarkModel.js" type="text/javascript"></script>
+	<script src="models/settingsModel.js" type="text/javascript"></script>
+</head>
+<body ng-app="myApp" ng-controller="myController">
 
-	<div class="wrapper">
-	
-		<!-- Items part -->
-		<section class="items">
-			<h2 class="title">Items</h2>
-			<!-- Form -->
-			<form class="items-form" ng-submit="itemsNew()">
-				<input type="text" placeholder="Type name here..." ng-model="itemTitle" required>
-				<button type="submit">Add new</button>
-			</form>
-			<!-- List -->
-			<p class="hint" ng-show="model.items.length==0">No one items</p>
-			<ul class="items-list">
-				<li class="items-list-row ng-class:{'active': indexActive==$index};" title="Click to show comments" ng-repeat="item in model.items" ng-click="itemActivate($index)">
-					<p class="items-list-row-title">
-						{{item.itemTitle}}
-						<span class="items-list-row-count">{{item.comments.length}}</span>
-					</p>
-					<button type="button" ng-click="itemsDelete($index)">Delete</button>
-				</li>
-			</ul>			
-		</section>
-		
-		<!-- Comments part	 -->
-		<article class="comments">
-			<h2 class="title">Comments</h2>
-			<!-- List -->
-			<p class="hint" ng-show="indexActive==undefined">Select any item or insert comments</p>
-			<ul class="comments-list" ng-show="indexActive!=undefined">
-				<li class="comments-list-row" ng-repeat="comment in model.items[indexActive].comments">
-					<div class="comments-list-row-square"></div>
-					<p class="comments-list-row-caption">{{comment}}</p>
-				</li>
-				<!-- Insert new comment -->
-				<li class="comments-list-row">
-					<div class="comments-list-row-square"></div>
-					<textarea class="comments-list-row-caption" ng-model="itemComment"></textarea>
-					<button type="button" ng-show="itemComment.length>0" ng-click="commentNew()">Insert this comment or press Ctrl+Enter</button>
-				</li>
-			</ul>			
-		</article>
-	
-	</div>
+	<nav class="nav">
+		<ul class="nav-items row-one">
+			<li class="nav-items-item">		
+				<a href="#!websidePart">Go to the WEBSIDE PART</a>				
+			</li>
+			<li class="nav-items-item">
+				<a href="#!settings">Go to the SETTINGS PART</a>
+			</li>
+		</ul>
+		<button type="button" class="nav-button">Navigation menu</button>
+	</nav>
 
+	<!-- View -->
+	<div ng-view></div>
+	
+	<footer>
+		<h4>Project navigation</h4>
+		<ul>
+			<li>Using URL:<br>
+				Task/#!/websidePart<br>
+				Task/#!/websidePart<br>
+			</li>
+			<li>
+				Using 'Navigation menu'
+			</li>
+		</ul>
+	</footer>
+	
 </body>
 </html>

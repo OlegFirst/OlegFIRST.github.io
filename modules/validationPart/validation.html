@@ -1,0 +1,10 @@
+<div class="messenger" ng-controller="validationController" ng-show="messages.items.length>0">
+
+	<ul>
+		<li ng-repeat="item in messages.items">
+			<p>{{item.message}}</p>
+			<p class="messenger-example">Example: {{item.example}}</p>
+		</li>
+	</ul>
+	
+</div>
